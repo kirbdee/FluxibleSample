@@ -67,7 +67,7 @@ export default Html;
 
 What I'm expecting is the same as above, DOM parse, then client js execution to rehydrate and mount, then finally call this external file. Well that's not the case...
 
-![Current Observation](https://raw.githubusercontent.com/kirbdee/FluxibleSample/master/doc/images/current.png)
+![Current Observation](/doc/images/Current.png)
 
 What is observed is the DOM gets parsed, and client js is executed and rehydrates BUT setImmediate is wrapped around the actual mounting pushing it into the "next tick" but the DOM parse is still on its "tick". and then continues to run the rest of the client js file, then the external file. Once this "tick" is done it finally pulls the mount exectuion
 
@@ -97,7 +97,7 @@ rehydratePromise
             });
 ```
 
-![Solution Observation](https://raw.githubusercontent.com/kirbdee/FluxibleSample/master/doc/images/solution.png)
+![Solution Observation](/doc/images/Solution.png)
 
 __But what about "Ensures that errors in callback are not swallowed by promise" part?__
 
