@@ -1,6 +1,6 @@
 # setImmediate Issues
 
-__Solution can be see on the solution branch__
+__Solution can be see on the solution branch in the Fluxible package__
 
 __What is expected from the following code?__
 
@@ -85,7 +85,7 @@ rehydratePromise
 This IMO is bad... from the documentation ( https://github.com/YuzuJS/setImmediate and http://jphpsf.github.io/setImmediate-shim-demo/ ) it should be used for breaking apart large sync calls to make it more efficient like in their example. But using it in approprately can case crucial code to be pushed back into the task queue and be block by the remaining execution of the current "tick". AKA blocking the rendering of our application
 
 
-With the following change we can no observe the expected behavior of the HTML above: DOM parse, then client js execution, to rehydrate and mount, then finally call this external file.
+With the following [change in Fluxible.js](https://github.com/kirbdee/FluxibleSample/blob/solution/node_modules/fluxible/lib/Fluxible.js#L212) we can no observe the expected behavior of the HTML above: DOM parse, then client js execution, to rehydrate and mount, then finally call this external file.
 
 
 ``` javascript
