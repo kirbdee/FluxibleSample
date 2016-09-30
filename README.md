@@ -1,7 +1,8 @@
 # setImmediate Issues
 
+__Solution can be see on the solution branch__
 
-What is expected from the following code?
+__What is expected from the following code?__
 
 ``` javascript
 import React from 'react';
@@ -66,6 +67,8 @@ export default Html;
 
 What I'm expecting is the same as above, DOM parse, then client js execution to rehydrate and mount, then finally call this external file. Well that's not the case...
 
+![Current Observation](https://raw.githubusercontent.com/kirbdee/FluxibleSample/master/doc/images/current.png)
+
 What is observed is the DOM gets parsed, and client js is executed and rehydrates BUT setImmediate is wrapped around the actual mounting pushing it into the "next tick" but the DOM parse is still on its "tick". and then continues to run the rest of the client js file, then the external file. Once this "tick" is done it finally pulls the mount exectuion
 
 ``` javascript
@@ -94,7 +97,9 @@ rehydratePromise
             });
 ```
 
-But what about "Ensures that errors in callback are not swallowed by promise" part?
+![Solution Observation](https://raw.githubusercontent.com/kirbdee/FluxibleSample/master/doc/images/solution.png)
+
+__But what about "Ensures that errors in callback are not swallowed by promise" part?__
 
 There a far better solutions for error handling than sticking the ENTIRE call back into the queue.
 
@@ -145,3 +150,6 @@ app.rehydrate(dehydratedState, render);
 
 Now you can have the err object actually passed into something you control rather than throwing it into the abyss
 
+__You might also say well they should just be using external.js with the async tag!__ 
+
+while sure that's cool but async in it self can cause timing issues on crucial pieces of your application and can cause your application to seem "slower", while it waits for things, and really should only be used when you really know if the call isn't super crucial and can load whenever. With this solution even if you don't have a synchronous external.js it will bring the render back into the same "tick" and have the application rendered and ready before the DOMContentLoaded event.
