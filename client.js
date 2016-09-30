@@ -17,9 +17,17 @@ window.fluxibleDebug = debug;
 debugClient('rehydrating app');
 
 // pass in the dehydrated server state from server.js
-app.rehydrate(dehydratedState, (err, context) => {
+
+
+
+//Function to Properly handle errors from promises
+const functionThatHandlesError = (err) => {
+    //DO SOMETHING ABOUT IT
+};
+
+const render = (err,context) => {
     if (err) {
-        throw err;
+        functionThatHandlesError(err);
     }
     window.context = context;
     const mountNode = document.getElementById('app');
@@ -30,4 +38,7 @@ app.rehydrate(dehydratedState, (err, context) => {
         mountNode,
         () => debugClient('React Rendered')
     );
-});
+
+};
+
+app.rehydrate(dehydratedState, render);
